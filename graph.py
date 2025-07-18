@@ -391,10 +391,13 @@ def web_search(state):
 
     # Web search
     docs = web_search_tool.invoke({"query": question})
-    web_results = "\n".join([d["content"] for d in docs])
+    # in compatible with langchain_tavily update
+    results = docs.get("results", [])
+
+    web_results = "\n".join([d["content"] for d in results])
     web_results = Document(page_content=web_results)
 
-    return {"documents": web_results, "question": question}
+    return {"documents": [web_results], "question": question}
 
 
 ### Edges ###
